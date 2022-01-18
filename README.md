@@ -6,6 +6,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### 'nvm'
+
+Install nvm globally for use in running and keeping up to date with node.
+
+https://github.com/nvm-sh/nvm#nvmrc Instillation for mac and linux with a link to windows instalation.
+
 ### `npm start`
 
 Runs the app in the development mode.\
