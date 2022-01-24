@@ -13,7 +13,8 @@ function WebPlayback(props: any) {
         script.async = true;
 
         document.body.appendChild(script);
-        window.onSpotifyWebPlaybackSDKReady = () => {
+        //Turned this into an any type becuase I think Typescript is 'acting up' here.
+        (window as any).onSpotifyWebPlaybackSDKReady = () => {
             //EXPERIMENTING WITH OUT TO USE TYPE SCRIPT
         //window.(onSpotifyWebPlaybackSDKReady: Boolean) = () => {
             //TOKENS will be passed through props unless Mile's says otherwise this is just for testing purposes.
