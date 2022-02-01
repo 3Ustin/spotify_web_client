@@ -24,6 +24,7 @@ function WebPlayback(props: any) {
                 volume: 0.5
             });
 
+            //Device ID is returning a string I believe not a number, as miles about this.
             player.addListener('ready', ({device_id}: {device_id: number}) => {
                 console.log('Ready with Device ID', (device_id));
             });
@@ -37,8 +38,13 @@ function WebPlayback(props: any) {
         };
     }, []);
 
+    const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+        console.log("clicked");
+    }
+
     return (
         <div className="WebPlayback">
+            <button onClick={buttonHandler} style={{color:'blue', width:'400px', height:'100px' }}> Click me!</button>
         </div>
     );
 
