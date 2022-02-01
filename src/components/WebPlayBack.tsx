@@ -61,10 +61,14 @@ function WebPlayback(props: any) {
         }
         setPlayerInfo(updatedPlayerInfo);
     }
+    const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+        console.log("clicked");
+    }
 
     return (
         <div className="WebPlayback">
             { playerinfo && <PlayerUI trackName = {playerinfo.trackName} albumName = {playerinfo.albumName} artistName = {playerinfo.artistName}/> }
+            <button onClick={buttonHandler} style={{color:'blue', width:'400px', height:'100px' }}> Click me!</button>
         </div>
         
     );
