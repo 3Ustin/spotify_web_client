@@ -1,0 +1,29 @@
+import React from 'react'
+import { render as rtlRender, RenderOptions } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import store, { initialRootState, RootState } from './store'
+
+interface StoreConfig extends RenderOptions {
+  preloadedState: RootState,
+  reduxStore: typeof store,
+}
+
+function render(
+  ui: React.ReactElement,
+  {
+    preloadedState,
+    reduxStore,
+    ...renderOptions
+  }: StoreConfig = {
+    preloadedState: initialRootState,
+    reduxStore: store
+  }
+): ReturnType<typeof rtlRender> {
+  function Wrapper({ children }: { children: React.ReactElement<any, string | React.JSXElementConstructor<any>>}) {
+    return <Provider store={store}>{children}</Provider>
+  }
+  return rtlRender(ui, { wrapper: Wrapper, ...renderOptions })
+}
+
+export * from '@testing-library/react'
+export { render }
