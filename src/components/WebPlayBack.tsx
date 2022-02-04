@@ -18,7 +18,7 @@ function WebPlayback(props: any) {
         //'ts-ignore' is a Bandaid fix see issue on GitHub to create a 'Type Declaration File'.
         // @ts-ignore
         window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = 'BQAi4KF7wMKgrSzrco_1NjpW64niomc0zqtWzXyvgabhUhR9LbPeEpDR8w7elczLa2D9tZNBo4V39lGktGF0D1kDlOelMATp8AAn5k-FeWkOGQ4yXf6yQ5lxR5C4LCWwEstvpSSQwiFezzDTPFEp8ys_EynvZtXurjU';
+            const token = 'My Access Token';
             //For instantiating Spotify Player object.
             //@ts-ignore
             const player = new window.Spotify.Player({
@@ -62,7 +62,13 @@ function WebPlayback(props: any) {
         setPlayerInfo(updatedPlayerInfo);
     }
     const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-        console.log("clicked");
+        //@ts-ignore
+        console.log(statePlayer);
+        //@ts-ignore
+        statePlayer.getVolume().then((volume: number)=> {
+            let volume_percentage = volume * 100;
+            console.log(`The volume of the player is ${volume_percentage}%`);
+        });
     }
 
     return (
