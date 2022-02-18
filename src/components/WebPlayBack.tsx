@@ -18,7 +18,7 @@ function WebPlayback(props: any) {
         //'ts-ignore' is a Bandaid fix see issue on GitHub to create a 'Type Declaration File'.
         // @ts-ignore
         window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = 'My Access Token';
+            const token = 'BQC8-XcJ14kLmfW963Z33THxXl6NRcvPGeI8IfKnTa5xKN5ip7JrSwhY55mM-QqZpa3JzQhpp7BeHwmS0pVx0OBRXnY4iOUfN_Cv4AL5Eu4GBjXTZnXvwJlzDo7ZqUBLyp6p__QTSFYr1xq-PXA1E_qy8027QzXDxP8';
             //For instantiating Spotify Player object.
             //@ts-ignore
             const player = new window.Spotify.Player({
@@ -64,6 +64,22 @@ function WebPlayback(props: any) {
     const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         //@ts-ignore
         console.log(statePlayer);
+
+        //@ts-ignore
+        statePlayer.getCurrentState().then(state => {
+            if (!state) {
+                console.error('User is not playing music through the Web Playback SDK');
+                return;
+            }
+            
+            var current_track = state.track_window.current_track;
+            var next_track = state.track_window.next_tracks[0];
+
+            console.log('Currently Playing', current_track);
+            console.log('Playing Next', next_track);
+        });
+
+
         //@ts-ignore
         statePlayer.getVolume().then((volume: number)=> {
             let volume_percentage = volume * 100;
@@ -72,6 +88,8 @@ function WebPlayback(props: any) {
     }
 
     return (
+        /*
+        THIS IS TEST CODE FOR RECIEVING PLAYER INFO THROUGH A BUTTON*/
         <div className="WebPlayback">
             { playerinfo && <PlayerUI trackName = {playerinfo.trackName} albumName = {playerinfo.albumName} artistName = {playerinfo.artistName}/> }
             <button onClick={buttonHandler} style={{color:'blue', width:'400px', height:'100px' }}> Click me!</button>
