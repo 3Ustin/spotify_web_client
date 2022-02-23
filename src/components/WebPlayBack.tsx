@@ -1,3 +1,4 @@
+import { Console } from 'console';
 import { useEffect, useState} from 'react';
 import PlayerUI, {IPlayerUIProps} from './PlayerUI';
 
@@ -18,7 +19,7 @@ function WebPlayback(props: any) {
         //'ts-ignore' is a Bandaid fix see issue on GitHub to create a 'Type Declaration File'.
         // @ts-ignore
         window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = 'BQCQQz1SLEaC7WIFgytE1srWTIIZSqZXgRPqWYE_CjH3Tgf4UAk-ennMkN8zAKaeQ22GLljT3F_T_EUjHUD2hqzIS8O8q92AwWIDsNa-5rMdyF3-MqcRnaJr377QW8E9k4GusUcFQk6glcDR4Kx9mq5aTPF1UBKM5QM';
+            const token = 'BQCSKw26P4bJxxAY3uy6NQj03CxtNvKYeBR-5zLtuF2fK3ma9uWsPTQv9dyAE6YzzQgpufb3yvobfapgT9XlSjG33ThCZKly4C3O99OudzNvV2kYwNEgE-SZqHSOyCjgjzCQuZ06CKcP5vwKndlWD9siSaDb_zM9Oac';
             //For instantiating Spotify Player object.
             //@ts-ignore
             const player = new window.Spotify.Player({
@@ -26,7 +27,7 @@ function WebPlayback(props: any) {
                 getOAuthToken: (cb: (arg:string) => any) => { cb(token); },
                 volume: 0.05
             });
-            
+            //listener to the player object for instatiating the player info on startup.
             player.addListener('ready', ({device_id}: {device_id: string}) => {
                 console.log('Ready with Device ID', (device_id));
                 //@ts-ignore
@@ -34,16 +35,17 @@ function WebPlayback(props: any) {
                     updatePlayerInfo(state);
                 });
             });
-
+            //listener to know if Spotify License has been expired
+            //NOT IMPLEMENTED YET
+                //In this method is where we will put checking spotify for permissions by getting a access token.
             player.addListener('not_ready', ({device_id}: {device_id: string}) => {
                 console.log('Device ID has gone offline', device_id);
             });
-
+            //listener to keep player information updated and accurate.
             //@ts-ignore
             player.addListener('player_state_changed', (state) => {
                 updatePlayerInfo(state);
             });
-            
             player.connect();
         };
     }, []);
@@ -86,10 +88,47 @@ function WebPlayback(props: any) {
             console.log(`The volume of the player is ${volume_percentage}%`);
         });
     }
+    //Method for playing and pausing music based on player state.
+    const toggle = (event: React.MouseEvent<HTMLElement>) => {
+        console.log("toggle clicked")
+        //@ts-ignore
+        statePlayer.getCurrentState().then(state => {
+            if (!state) {
+                //@ts-ignore
+                statePlayer.togglePlay().then(() => {
+                    console.log('player toggled: ' + state);
+                });
+            
+                return;
+            }
+            //@ts-ignore
+            statePlayer.togglePlay().then(() => {
+                console.log('player toggled: ' + state);
+            });
+        });
+    }
+    //Method for playing next track
+    const forward = (event: React.MouseEvent<HTMLElement>) => {
+        //@ts-ignore
+        statePlayer.nextTrack().then(() => {
+            console.log('Skipped to next track!');
+        });
+    }
+    //Method for playing previous track
+    const backward = (event: React.MouseEvent<HTMLElement>) => {
+        ///@ts-ignore
+        statePlayer.previousTrack().then(() => {
+            console.log('Set player to Previous track!');
+        });
+    }
 
     return (
-        /*THIS IS TEST CODE FOR RECIEVING PLAYER INFO THROUGH A BUTTON*/
         <div className="WebPlayback">
+            {/* Buttons that allow player controls for user. */}
+            <button onClick={backward}>backward</button>
+            <button onClick={toggle}>toggle</button>
+            <button onClick={forward}>forward</button>
+            {/* Displaying the player information to user through PlayerUI component */}
             { playerinfo && <PlayerUI trackName = {playerinfo.trackName} albumName = {playerinfo.albumName} artistName = {playerinfo.artistName}/> }
         </div>
         
