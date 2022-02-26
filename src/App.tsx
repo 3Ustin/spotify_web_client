@@ -2,7 +2,6 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import WebPlayback from './components/WebPlayBack';
-import PlayerUI from './components/PlayerUI'
 
 function App() {
   return (
@@ -13,7 +12,6 @@ function App() {
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
         <WebPlayback/>
-        
         <a
           className="App-link"
           href="https://reactjs.org"

@@ -7,16 +7,13 @@ export interface IPlayerUIProps {
     albumName: string,
     artistName: string
 }
-//@ts-ignore
 function PlayerUI(props: IPlayerUIProps) {
-
     //Deconstruction props
     const {
         trackName,
         albumName,
         artistName
     } = props;
-
     //Displaying to the user props.
     return(
         <div> 
