@@ -5,11 +5,22 @@ interface CounterState {
   resetCounter: number
 }
 
+/**
+ * Initial counter state
+ * 
+ * We create the counter with an initial value of 0 and an
+ * initial resetCounter value of 0
+ */
 const initialState = {
   value: 0,
   resetCounter: 0
 } as CounterState
 
+/**
+ * Creates a slice that holds the initial state needed for our Counter
+ * as well as defining how increment, decrement, and reset actions will
+ * return us a new state
+ */
 const counterSlice = createSlice({
   name: 'counter',
   initialState: initialState,

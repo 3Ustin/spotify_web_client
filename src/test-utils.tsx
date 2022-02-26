@@ -8,6 +8,15 @@ interface StoreConfig extends RenderOptions {
   reduxStore: typeof store,
 }
 
+/**
+ * Wraps the react-testing-library render function to automatically
+ * wrap any component with a Provider so that they can access an actual
+ * implementation of our Redux store from tests
+ * 
+ * This will make it much easier to write tests for components that depend
+ * on redux because we will not have to worry about setting up a mock
+ * provider for each component
+ */
 function render(
   ui: React.ReactElement,
   {

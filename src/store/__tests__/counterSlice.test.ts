@@ -1,5 +1,8 @@
 import reducer, { CounterState, increment, decrement, reset } from "../counterSlice"
 
+/**
+ * Test file for our counter slice
+ */
 
 const previousState: CounterState = {
   value: 10,
