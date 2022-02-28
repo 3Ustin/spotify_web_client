@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import WebPlayback from './components/WebPlayBack';
-import PlayerUI from './components/PlayerUI'
+import Counter from './components/Counter'
 
 function App() {
   return (
@@ -22,6 +22,7 @@ function App() {
         >
           Learn React
         </a>
+        <Counter></Counter>
       </header>
     </div>
   );
