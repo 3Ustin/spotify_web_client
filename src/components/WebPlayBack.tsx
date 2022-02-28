@@ -1,11 +1,13 @@
 import { useEffect, useState} from 'react';
 import PlayerUI, {IPlayerUIProps} from './PlayerUI';
+import UserControls, {IUserControlsProps} from './UserControls';
 
 //In current build put Access Token Manually in (Line 18)
 //Look for an issue in Git for authentification for more info.
 function WebPlayback(props: any) {
     //state variable for sending through props
     const [playerinfo,setPlayerInfo] = useState<IPlayerUIProps | undefined>();
+    const [playerControls, setPlayerControls] = useState<IUserControlsProps | undefined>();
     
     useEffect(() => {
 
@@ -18,7 +20,7 @@ function WebPlayback(props: any) {
         //'ts-ignore' is a Bandaid fix see issue on GitHub to create a 'Type Declaration File'.
         // @ts-ignore
         window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = 'BQAi4KF7wMKgrSzrco_1NjpW64niomc0zqtWzXyvgabhUhR9LbPeEpDR8w7elczLa2D9tZNBo4V39lGktGF0D1kDlOelMATp8AAn5k-FeWkOGQ4yXf6yQ5lxR5C4LCWwEstvpSSQwiFezzDTPFEp8ys_EynvZtXurjU';
+            const token = 'My Access Token';
             //For instantiating Spotify Player object.
             //@ts-ignore
             const player = new window.Spotify.Player({
@@ -26,30 +28,31 @@ function WebPlayback(props: any) {
                 getOAuthToken: (cb: (arg:string) => any) => { cb(token); },
                 volume: 0.05
             });
-            
+            //listener to the player object for instatiating the player info on startup.
             player.addListener('ready', ({device_id}: {device_id: string}) => {
                 console.log('Ready with Device ID', (device_id));
+                initializePlayerControls(player);
                 //@ts-ignore
                 player.getCurrentState().then(state => {
                     updatePlayerInfo(state);
                 });
             });
-
+            //listener to know if Spotify License has been expired
+            //NOT IMPLEMENTED YET
+                //In this method is where we will put checking spotify for permissions by getting a access token.
             player.addListener('not_ready', ({device_id}: {device_id: string}) => {
                 console.log('Device ID has gone offline', device_id);
             });
-
+            //listener to keep player information updated and accurate.
             //@ts-ignore
             player.addListener('player_state_changed', (state) => {
                 updatePlayerInfo(state);
             });
-            
             player.connect();
         };
     }, []);
 
-//@ts-ignore
-    const updatePlayerInfo = (state) => {
+    const updatePlayerInfo = (state : any) => {
         if (!state) {
             console.error('User is not playing music through the Web Playback SDK');
             return;
@@ -62,13 +65,34 @@ function WebPlayback(props: any) {
         setPlayerInfo(updatedPlayerInfo);
     }
 
+    const initializePlayerControls = (player: any) => {
+        if (!player) {
+            console.error('User is not playing music through the Web Playback SDK');
+            return;
+        }
+        const updatedPlayerInfo: IUserControlsProps = {
+            backward : () => player.previousTrack().then(() => {
+                console.log('player toggled');
+            }),
+            toggle : () => player.togglePlay().then(() => {
+                console.log('player toggled');
+            }),
+            forward : () => player.nextTrack().then(() => {
+                console.log('Skipped to next track!');
+            })
+        }
+        setPlayerControls(updatedPlayerInfo);
+    }
+
     return (
         <div className="WebPlayback">
+            {/* Buttons that allow player controls for user. */}
+            {playerControls && <UserControls backward = {playerControls.backward} toggle = {playerControls.toggle} forward = {playerControls.forward}/>}
+            {/* Displaying the player information to user through PlayerUI component */}
             { playerinfo && <PlayerUI trackName = {playerinfo.trackName} albumName = {playerinfo.albumName} artistName = {playerinfo.artistName}/> }
         </div>
         
     );
-
 }
 
 export default WebPlayback
