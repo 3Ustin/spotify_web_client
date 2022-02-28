@@ -1,12 +1,13 @@
-import { Console } from 'console';
 import { useEffect, useState} from 'react';
 import PlayerUI, {IPlayerUIProps} from './PlayerUI';
+import UserControls, {IUserControlsProps} from './UserControls';
 
 //In current build put Access Token Manually in (Line 18)
 //Look for an issue in Git for authentification for more info.
 function WebPlayback(props: any) {
     //state variable for sending through props
     const [playerinfo,setPlayerInfo] = useState<IPlayerUIProps | undefined>();
+    const [playerControls, setPlayerControls] = useState<IUserControlsProps | undefined>();
     
     useEffect(() => {
 
@@ -19,7 +20,7 @@ function WebPlayback(props: any) {
         //'ts-ignore' is a Bandaid fix see issue on GitHub to create a 'Type Declaration File'.
         // @ts-ignore
         window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = 'BQCSKw26P4bJxxAY3uy6NQj03CxtNvKYeBR-5zLtuF2fK3ma9uWsPTQv9dyAE6YzzQgpufb3yvobfapgT9XlSjG33ThCZKly4C3O99OudzNvV2kYwNEgE-SZqHSOyCjgjzCQuZ06CKcP5vwKndlWD9siSaDb_zM9Oac';
+            const token = 'My Access Token';
             //For instantiating Spotify Player object.
             //@ts-ignore
             const player = new window.Spotify.Player({
@@ -30,6 +31,7 @@ function WebPlayback(props: any) {
             //listener to the player object for instatiating the player info on startup.
             player.addListener('ready', ({device_id}: {device_id: string}) => {
                 console.log('Ready with Device ID', (device_id));
+                initializePlayerControls(player);
                 //@ts-ignore
                 player.getCurrentState().then(state => {
                     updatePlayerInfo(state);
@@ -50,8 +52,7 @@ function WebPlayback(props: any) {
         };
     }, []);
 
-//@ts-ignore
-    const updatePlayerInfo = (state) => {
+    const updatePlayerInfo = (state : any) => {
         if (!state) {
             console.error('User is not playing music through the Web Playback SDK');
             return;
@@ -63,77 +64,35 @@ function WebPlayback(props: any) {
         }
         setPlayerInfo(updatedPlayerInfo);
     }
-    const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-        //@ts-ignore
-        console.log(statePlayer);
 
-        //@ts-ignore
-        statePlayer.getCurrentState().then(state => {
-            if (!state) {
-                console.error('User is not playing music through the Web Playback SDK');
-                return;
-            }
-            
-            var current_track = state.track_window.current_track;
-            var next_track = state.track_window.next_tracks[0];
-
-            console.log('Currently Playing', current_track);
-            console.log('Playing Next', next_track);
-        });
-
-
-        //@ts-ignore
-        statePlayer.getVolume().then((volume: number)=> {
-            let volume_percentage = volume * 100;
-            console.log(`The volume of the player is ${volume_percentage}%`);
-        });
-    }
-    //Method for playing and pausing music based on player state.
-    const toggle = (event: React.MouseEvent<HTMLElement>) => {
-        console.log("toggle clicked")
-        //@ts-ignore
-        statePlayer.getCurrentState().then(state => {
-            if (!state) {
-                //@ts-ignore
-                statePlayer.togglePlay().then(() => {
-                    console.log('player toggled: ' + state);
-                });
-            
-                return;
-            }
-            //@ts-ignore
-            statePlayer.togglePlay().then(() => {
-                console.log('player toggled: ' + state);
-            });
-        });
-    }
-    //Method for playing next track
-    const forward = (event: React.MouseEvent<HTMLElement>) => {
-        //@ts-ignore
-        statePlayer.nextTrack().then(() => {
-            console.log('Skipped to next track!');
-        });
-    }
-    //Method for playing previous track
-    const backward = (event: React.MouseEvent<HTMLElement>) => {
-        ///@ts-ignore
-        statePlayer.previousTrack().then(() => {
-            console.log('Set player to Previous track!');
-        });
+    const initializePlayerControls = (player: any) => {
+        if (!player) {
+            console.error('User is not playing music through the Web Playback SDK');
+            return;
+        }
+        const updatedPlayerInfo: IUserControlsProps = {
+            backward : () => player.previousTrack().then(() => {
+                console.log('player toggled');
+            }),
+            toggle : () => player.togglePlay().then(() => {
+                console.log('player toggled');
+            }),
+            forward : () => player.nextTrack().then(() => {
+                console.log('Skipped to next track!');
+            })
+        }
+        setPlayerControls(updatedPlayerInfo);
     }
 
     return (
         <div className="WebPlayback">
             {/* Buttons that allow player controls for user. */}
-            <button onClick={backward}>backward</button>
-            <button onClick={toggle}>toggle</button>
-            <button onClick={forward}>forward</button>
+            {playerControls && <UserControls backward = {playerControls.backward} toggle = {playerControls.toggle} forward = {playerControls.forward}/>}
             {/* Displaying the player information to user through PlayerUI component */}
             { playerinfo && <PlayerUI trackName = {playerinfo.trackName} albumName = {playerinfo.albumName} artistName = {playerinfo.artistName}/> }
         </div>
         
     );
-
 }
 
 export default WebPlayback

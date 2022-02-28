@@ -1,6 +1,3 @@
-import { useState, useEffect} from 'react';
-import WebPlayback from './WebPlayBack';
-
 //Acceptable format for props data.
 export interface IPlayerUIProps {
     trackName: string,
@@ -23,5 +20,4 @@ function PlayerUI(props: IPlayerUIProps) {
         </div>
     );
 }
-
 export default PlayerUI;
