@@ -1,4 +1,4 @@
-//Acceptable format for props data.
+//Acceptable format for props data
 export interface IUserControlsProps {
     backward: (event: React.MouseEvent<HTMLElement>) => void
     toggle: (event: React.MouseEvent<HTMLElement>) => void,
@@ -8,6 +8,7 @@ export interface IUserControlsProps {
     tenBackward: (event: React.MouseEvent<HTMLElement>) => void
 }
 function UserControls(props:IUserControlsProps){
+    //Displaying Props
 return(
     <div> 
         <button onClick={props.backward}>backward</button>

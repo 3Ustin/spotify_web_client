@@ -1,4 +1,4 @@
-//Acceptable format for props data.
+//Acceptable format for props data
 export interface IPlayerUIProps {
     trackName: string,
     albumName: string,
@@ -11,7 +11,7 @@ function PlayerUI(props: IPlayerUIProps) {
         albumName,
         artistName
     } = props;
-    //Displaying to the user props.
+    //Displaying to the user props
     return(
         <div> 
             <div>Name: {trackName}</div>
