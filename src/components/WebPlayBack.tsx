@@ -21,7 +21,7 @@ function WebPlayback(props: any) {
         //'ts-ignore' is a Bandaid fix see issue on GitHub to create a 'Type Declaration File'.
         // @ts-ignore
         window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = 'My Access Code';
+            const token = 'BQB0Wpx4vG2UOMi2CIaRyarLphsBfArrbH6EPyJJ6u_MfRmUiOT84CANBmwCUtQciQ42Q5xQb5WckOX20Uvt_1KUMDu_-5kfetiNWh4DThR9fS_mM3KA0rTgPLTTcsuKSC4zp2cvTTc1uJzbIWbcMIxFc5Qzsd9WhCA';
             //For instantiating Spotify Player object.
             //@ts-ignore
             const player = new window.Spotify.Player({
