@@ -1,10 +1,15 @@
 import { useEffect, useState} from 'react';
 import PlayerUI, {IPlayerUIProps} from './PlayerUI';
+import Search from './Search/Search';
 import UserControls, {IUserControlsProps, IUserControlFunctions} from './UserControls';
 
-//In current build put Access Token Manually in (Line 18)
-//Look for an issue in Git for authentification for more info.
-function WebPlayback(props: any) {
+interface IWebPlaybackProps {
+    token: string
+}
+
+function WebPlayback(props: IWebPlaybackProps) {
+    const { token } = props
+
     //state variable for sending through props
     const [playerinfo,setPlayerInfo] = useState<IPlayerUIProps | undefined>();
     const [playerControlFunctions, setPlayerControlFuntions] = useState<IUserControlFunctions | undefined>();
@@ -21,7 +26,6 @@ function WebPlayback(props: any) {
         //'ts-ignore' is a Bandaid fix see issue on GitHub to create a 'Type Declaration File'.
         // @ts-ignore
         window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = 'My Access Code';
             //For instantiating Spotify Player object.
             //@ts-ignore
             const player = new window.Spotify.Player({
@@ -115,6 +119,7 @@ function WebPlayback(props: any) {
 
     return (
         <div className="WebPlayback">
+            <Search />
             {/* Buttons that allow player controls for user. */}
             {playerControlFunctions && <UserControls controlFunctions = {playerControlFunctions} isPlaying = {isPlaying} />}
             {/* Displaying the player information to user through PlayerUI component */}
