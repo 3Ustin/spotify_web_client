@@ -74,7 +74,7 @@ app.get('/api/v1/auth/token', (req, res) => {
 
 app.get('/api/v1/search', (req, res) => {
   const search_query_parameters = new URLSearchParams({
-    type: 'album,artist,track,genre',
+    type: 'album,artist,track',
     ...req.query
   })
 
