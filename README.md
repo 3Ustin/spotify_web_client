@@ -12,6 +12,15 @@ Install nvm globally for use in running and keeping up to date with node.
 
 https://github.com/nvm-sh/nvm#nvmrc Instillation for mac and linux with a link to windows instalation.
 
+### `npm server`
+
+Starts the Proxy server
+
+The proxy server needs to be running for the React application to work. Before running `npm start` to start
+the React app, make sure the proxy server is running with `npm server`
+
+TODO: Write one script to start the server and React app at the same time
+
 ### `npm start`
 
 Runs the app in the development mode.\
