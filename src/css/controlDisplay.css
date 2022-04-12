@@ -1,0 +1,14 @@
+.userControls{
+    position: fixed;
+    top:auto;
+    bottom: 0%;
+    right: 1%;
+    left: 1%;
+    width:auto;
+}
+
+.volume{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+

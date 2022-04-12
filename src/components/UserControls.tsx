@@ -9,6 +9,11 @@ import FastRewind from '@mui/icons-material/FastRewind';
 import Replay10Icon from '@mui/icons-material/Replay10';
 import Forward10Icon from '@mui/icons-material/Forward10';
 import PauseIcon from '@mui/icons-material/Pause';
+import Container from '@mui/material/Container';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import '../css/controlDisplay.css';
 
 //Acceptable format for props data
 export interface IUserControlFunctions {
@@ -33,14 +38,18 @@ function UserControls(props:IUserControlsProps){
 
     //Displaying Props
 return(
-    <div> 
-        <Button onClick={props.controlFunctions.backward} variant="contained" startIcon={<SkipPreviousIcon/>}>backward</Button>
-        <Button onClick={props.controlFunctions.toggle} variant="contained" startIcon={toggleIcon}></Button>
-        <Button onClick={props.controlFunctions.forward} variant="contained" startIcon={<SkipNextIcon/>}>forward</Button>
-        {/*@ts-ignore*/}
-        <Slider min={1} max={100} step={1} onChange={props.controlFunctions.volume}></Slider>
-        <Button onClick={props.controlFunctions.tenBackward} variant="contained" startIcon={<Replay10Icon/>}>-10s</Button>
-        <Button onClick={props.controlFunctions.tenForward} variant="contained" startIcon={<Forward10Icon/>}>+10s</Button>
+    <div>
+        <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+            <Toolbar >
+                <Button onClick={props.controlFunctions.backward} variant="contained" startIcon={<SkipPreviousIcon/>}></Button>
+                <Button onClick={props.controlFunctions.toggle} variant="contained" startIcon={toggleIcon}></Button>
+                <Button onClick={props.controlFunctions.forward} variant="contained" startIcon={<SkipNextIcon/>}></Button>
+                {/*@ts-ignore*/}
+                <Slider min={1} max={100} step={1} onChange={props.controlFunctions.volume}></Slider>
+                <Button onClick={props.controlFunctions.tenBackward} variant="contained" startIcon={<Replay10Icon/>}></Button>
+                <Button onClick={props.controlFunctions.tenForward} variant="contained" startIcon={<Forward10Icon/>}></Button>
+            </Toolbar>
+        </AppBar>
     </div>
 );
 }
