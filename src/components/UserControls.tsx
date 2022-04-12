@@ -30,7 +30,6 @@ export interface IUserControlsProps {
     isPlaying: boolean
 }
 function UserControls(props:IUserControlsProps){
-//PUT IN BOOL LOGIC HERE 
     let toggleIcon;
     if(props.isPlaying){toggleIcon = <PauseIcon/>}
     else{toggleIcon = <PlayArrowIcon/>}
