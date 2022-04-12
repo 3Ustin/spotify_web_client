@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import { ISearchResult } from '../../types/SearchTypes'
 import SearchResults from './SearchResults'
+import Container from '@mui/material/Container'
 
 function Search() {
 
@@ -35,9 +36,9 @@ function Search() {
           <input type="search" placeholder="Search for music..." value={searchText} onChange={handleSearchTextChange}></input>
         </form>
       </div>
-      <div>
+      <Container>
         {searchResults && <SearchResults results={searchResults}></SearchResults>}
-      </div>
+      </Container>
     </div>
   )
 }

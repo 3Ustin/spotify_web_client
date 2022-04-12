@@ -1,3 +1,4 @@
+import Grid from '@mui/material/Grid'
 import React from 'react'
 import { IResultItem, ResultItemType } from '../../types/SearchTypes'
 import SearchResultItem from './SearchResultItem'
@@ -27,10 +28,12 @@ function SearchResult(props: ISearchResultProps) {
   
   return (
     <div>
-      <h3>{headerMessage}</h3>
-      {items.map((item) => {
-        return (<SearchResultItem key={item.id} item={item}/>)
-      })}
+      <h1>{headerMessage}</h1>
+      <Grid container spacing={5}>
+        {items.map((item) => {
+          return (<SearchResultItem key={item.id} item={item}/>)
+        })}
+      </Grid>
     </div>
   )
 }
