@@ -3,8 +3,12 @@ import { ISearchResult } from '../../types/SearchTypes'
 import SearchResults from './SearchResults'
 import Container from '@mui/material/Container'
 
-function Search() {
+interface ISearchProps{
+  deviceId:string
+}
 
+function Search(props:ISearchProps) {
+  const {deviceId} = props;
   const [searchText, setSearchText] = useState<string>('')
   const [searchResults, setSearchResults] = useState<ISearchResult | undefined>()
 
@@ -31,13 +35,13 @@ function Search() {
 
   return (
     <div>
-      <div>
+      <Container>
         <form onSubmit={handleSubmit}>
           <input type="search" placeholder="Search for music..." value={searchText} onChange={handleSearchTextChange}></input>
         </form>
-      </div>
+      </Container>
       <Container>
-        {searchResults && <SearchResults results={searchResults}></SearchResults>}
+        {searchResults && <SearchResults results={searchResults} deviceId={deviceId}></SearchResults>}
       </Container>
     </div>
   )

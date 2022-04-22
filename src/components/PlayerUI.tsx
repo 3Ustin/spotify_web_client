@@ -1,3 +1,5 @@
+import { Card, Container, AppBar, Toolbar, Typography } from "@mui/material";
+
 //Acceptable format for props data
 export interface IPlayerUIProps {
     trackName: string,
@@ -13,7 +15,7 @@ function PlayerUI(props: IPlayerUIProps) {
     } = props;
     //Displaying to the user props
     return(
-        <div> 
+        <div style={{top: 0,position: 'fixed',left:'50%'}}> 
             <div>Name: {trackName}</div>
             <div>Album: {albumName}</div>
             <div>Artist: {artistName}</div>

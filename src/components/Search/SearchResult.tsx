@@ -6,10 +6,11 @@ import SearchResultItem from './SearchResultItem'
 interface ISearchResultProps {
   items: IResultItem[]
   type: ResultItemType
+  deviceId: string
 }
 
 function SearchResult(props: ISearchResultProps) {
-  const { items, type } = props
+  const { items, type, deviceId } = props
 
   let headerMessage
   switch (type) {
@@ -31,7 +32,7 @@ function SearchResult(props: ISearchResultProps) {
       <h1>{headerMessage}</h1>
       <Grid container spacing={5}>
         {items.map((item) => {
-          return (<SearchResultItem key={item.id} item={item}/>)
+          return (<SearchResultItem key={item.id} item={item} deviceId={deviceId}/>)
         })}
       </Grid>
     </div>

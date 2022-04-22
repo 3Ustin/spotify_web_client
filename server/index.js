@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
 const { v4: uuidv4  } = require('uuid')
 const path = require('path')
@@ -15,9 +16,17 @@ const hostURL = process.env.HOST_URL || 'http://localhost:3000'
 
 const app = express()
 
+// create application/json parser
+var jsonParser = bodyParser.json()
+ 
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 app.use(cookieParser())
 
+
 app.use(express.static(path.join(__dirname, '../build')))
+
 
 app.get('/api/v1/auth/login', (req, res) => {
   const scope = 'streaming \
@@ -92,6 +101,28 @@ app.get('/api/v1/search', (req, res) => {
   })
 })
 
+app.put('/api/v1/me/player/play', jsonParser,(req, res) => {
+  const access_token = req.cookies.SPOTIFY_ACCESS_TOKEN
+  
+  // const search_query_parameters = new URLSearchParams({
+  //   ...req.query
+  // })
+  //Get device_id to component and send through query parameter to store in playOptions.
+  const playOptions = {
+    url: `https://api.spotify.com/v1/me/player/play?device_id=${req.query.device_id}`,
+    headers: {
+      'Authorization': `Bearer ${access_token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(req.body)
+  }
+
+  request.put(playOptions, function(error, response, body) {
+    res.status(response.statusCode).json(body)
+  })
+})
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
+

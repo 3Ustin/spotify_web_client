@@ -9,4 +9,5 @@ module.exports = function (app) {
     '/api/v1/**',
     middleware
   )
+
 }

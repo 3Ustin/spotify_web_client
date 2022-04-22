@@ -14,6 +14,7 @@ function WebPlayback(props: IWebPlaybackProps) {
     const [playerinfo,setPlayerInfo] = useState<IPlayerUIProps | undefined>();
     const [playerControlFunctions, setPlayerControlFuntions] = useState<IUserControlFunctions | undefined>();
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    const [deviceId,setDeviceId] = useState<string>();
     
     useEffect(() => {
 
@@ -31,11 +32,12 @@ function WebPlayback(props: IWebPlaybackProps) {
             const player = new window.Spotify.Player({
                 name: 'WebPlayBack SDK',
                 getOAuthToken: (cb: (arg:string) => any) => { cb(token); },
-                volume: 0.05
+                volume: 10.00
             });
             //listener to the player object for instatiating the player info on startup.
             player.addListener('ready', ({device_id}: {device_id: string}) => {
                 console.log('Ready with Device ID', (device_id));
+                setDeviceId(device_id);
                 initializePlayerControls(player);
                 //@ts-ignore
                 player.getCurrentState().then(state => {
@@ -119,11 +121,11 @@ function WebPlayback(props: IWebPlaybackProps) {
 
     return (
         <div className="WebPlayback">
-            <Search />
+            {deviceId && <Search deviceId = {deviceId}/>}
             {/* Buttons that allow player controls for user. */}
             {playerControlFunctions && <UserControls controlFunctions = {playerControlFunctions} isPlaying = {isPlaying} />}
             {/* Displaying the player information to user through PlayerUI component */}
-            { playerinfo && <PlayerUI trackName = {playerinfo.trackName} albumName = {playerinfo.albumName} artistName = {playerinfo.artistName}/> }
+            {playerinfo && <PlayerUI trackName = {playerinfo.trackName} albumName = {playerinfo.albumName} artistName = {playerinfo.artistName}/> }
         </div>
     );
 }
