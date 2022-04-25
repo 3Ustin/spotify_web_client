@@ -1,4 +1,5 @@
 import { AppBar, Container, Toolbar, Typography } from '@mui/material'
+import "../css/playerInfoDisplay.css"
 import React from 'react'
 
 //Acceptable format for props data
@@ -16,11 +17,11 @@ function PlayerUI(props: IPlayerUIProps) {
     } = props;
     //Displaying to the user props
     return(
-        <AppBar position='fixed' color='primary' sx={{ left: '0', width:'200px', maxheight:'100%',height:'100%' }}>
-            <Toolbar sx={{ flexDirection:"column" }}>
-                <Container  sx={{padding:'20px', paddingTop:'40px'}}><Typography variant='h5' align='center' sx={{color:'rgb(0, 0, 0)'}}>Name: </Typography><Typography align='center' sx={{color:'rgb(0, 0, 0)'}}>{trackName}</Typography></Container>
-                <Container sx={{padding:'20px'}}><Typography variant='h5' align='center' sx={{color:'rgb(0, 0, 0)'}}>Album: </Typography><Typography align='center' sx={{color:'rgb(0, 0, 0)'}}>{albumName}</Typography></Container>
-                <Container sx={{padding:'20px'}}><Typography variant='h5' align='center' sx={{color:'rgb(0, 0, 0)'}}>Artist: </Typography><Typography align='center' sx={{color:'rgb(0, 0, 0)'}}>{artistName}</Typography></Container>
+        <AppBar color='primary' sx={{ left: '0', width:'200px', maxheight:'100%',height:'100%' }}> {/*This inline Css is here because the appbar class is being overwritten by MUI component AppBar*/}
+            <Toolbar className='toolbar'>
+                <Container className='container'><Typography variant='h5' align='center' >Name: </Typography><Typography align='center' >{trackName}</Typography></Container>
+                <Container className='container' ><Typography variant='h5' align='center' >Album: </Typography><Typography align='center' >{albumName}</Typography></Container>
+                <Container className='container'><Typography variant='h5' align='center' sx={{color:'rgb(0, 0, 0)'}}>Artist: </Typography><Typography align='center' >{artistName}</Typography></Container>
             </Toolbar>
         </AppBar>
     );
