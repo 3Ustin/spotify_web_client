@@ -1,7 +1,8 @@
+import Box from '@mui/material/Box';
 import { useEffect, useState} from 'react';
 import PlayerUI, {IPlayerUIProps} from './PlayerUI';
 import Search from './Search/Search';
-import UserControls, {IUserControlsProps, IUserControlFunctions} from './UserControls';
+import UserControls, {IUserControlFunctions} from './UserControls';
 
 interface IWebPlaybackProps {
     token: string
@@ -120,13 +121,24 @@ function WebPlayback(props: IWebPlaybackProps) {
     }
 
     return (
-        <div className="WebPlayback">
-            {deviceId && <Search deviceId = {deviceId}/>}
-            {/* Buttons that allow player controls for user. */}
-            {playerControlFunctions && <UserControls controlFunctions = {playerControlFunctions} isPlaying = {isPlaying} />}
-            {/* Displaying the player information to user through PlayerUI component */}
-            {playerinfo && <PlayerUI trackName = {playerinfo.trackName} albumName = {playerinfo.albumName} artistName = {playerinfo.artistName}/> }
-        </div>
+        <Box
+            sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                gap: 0,
+                gridTemplateRows: 'auto',
+                gridTemplateAreas: `
+                    "info search search search"
+                    "info search search search"
+                    "info search search search"
+                    "control control control control"
+                `
+            }}
+        >
+            <Box sx={{gridArea: 'info'}}>{playerinfo && <PlayerUI trackName = {playerinfo.trackName} albumName = {playerinfo.albumName} artistName = {playerinfo.artistName}/> }</Box>
+            <Box sx={{gridArea: 'search'}}>{deviceId && <Search deviceId = {deviceId}/>}</Box>
+            <Box sx={{gridArea: 'control'}}>{playerControlFunctions && <UserControls controlFunctions = {playerControlFunctions} isPlaying = {isPlaying} />}</Box>
+        </Box>
     );
 }
 
