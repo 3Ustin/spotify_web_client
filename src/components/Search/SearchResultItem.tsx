@@ -38,9 +38,9 @@ function SearchResultItem(props: ISearchResultItemProps) {
                                         'Content-Type': 'application/json'
                                       }
                                     });
-      } finally {
-        // Reset search text after searching
-        //setSearchText('')
+      } 
+      finally {
+        //blocked to put error catches in the future.
       }
     }
     getResponse()

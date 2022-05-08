@@ -104,10 +104,6 @@ app.get('/api/v1/search', (req, res) => {
 app.put('/api/v1/me/player/play', jsonParser,(req, res) => {
   const access_token = req.cookies.SPOTIFY_ACCESS_TOKEN
   
-  // const search_query_parameters = new URLSearchParams({
-  //   ...req.query
-  // })
-  //Get device_id to component and send through query parameter to store in playOptions.
   const playOptions = {
     url: `https://api.spotify.com/v1/me/player/play?device_id=${req.query.device_id}`,
     headers: {
