@@ -1,3 +1,4 @@
+import CardMedia from '@mui/material/CardMedia'
 import React from 'react'
 import { IImage, ImageSize } from '../../types/SearchTypes'
 
@@ -26,7 +27,7 @@ function SearchResultImage(props: ISearchResultImageProps) {
   const image =  imagesLength >= index ? images[imagesLength - 1] : images[index]
 
   return (
-    <img src={image.url}></img>
+    <CardMedia component='img' height={100} src={image.url}></CardMedia>
   )
 }
 

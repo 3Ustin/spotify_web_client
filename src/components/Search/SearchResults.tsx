@@ -4,16 +4,17 @@ import SearchResult from './SearchResult'
 
 interface ISearchResultsProps {
   results: ISearchResult
+  deviceId: string
 }
 
 function SearchResults(props: ISearchResultsProps) {
-  const { results } = props
+  const { results, deviceId } = props
 
   return (
     <div>
-      <SearchResult items={results.albums.items} type='album'></SearchResult>
-      <SearchResult items={results.artists.items} type='artist'></SearchResult>
-      <SearchResult items={results.tracks.items} type='track'></SearchResult>
+      <SearchResult items={results.albums.items} type='album' deviceId={deviceId}></SearchResult>
+      <SearchResult items={results.artists.items} type='artist' deviceId={deviceId}></SearchResult>
+      <SearchResult items={results.tracks.items} type='track' deviceId={deviceId}></SearchResult>
     </div>
   )
 }
