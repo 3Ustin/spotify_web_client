@@ -13,6 +13,7 @@ import Container from '@mui/material/Container';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
+import SeekBar from './SeekBar';
 import '../css/controlDisplay.css';
 
 //Acceptable format for props data
@@ -23,11 +24,14 @@ export interface IUserControlFunctions {
     volume: (event: React.ChangeEvent<HTMLInputElement>) => void,
     tenForward: (event: React.MouseEvent<HTMLElement>) => void,
     tenBackward: (event: React.MouseEvent<HTMLElement>) => void,
+    seek: (position_ms: number) => void
 }
 
 export interface IUserControlsProps {
     controlFunctions: IUserControlFunctions,
-    isPlaying: boolean
+    isPlaying: boolean,
+    position:number,
+    duration:number
 }
 function UserControls(props:IUserControlsProps){
     let toggleIcon;
@@ -37,18 +41,16 @@ function UserControls(props:IUserControlsProps){
 
     //Displaying Props
 return(
-    <div>
-        <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-            <Toolbar >
-                <Button onClick={props.controlFunctions.backward} variant="contained" startIcon={<SkipPreviousIcon/>}></Button>
-                <Button onClick={props.controlFunctions.toggle} variant="contained" startIcon={toggleIcon}></Button>
-                <Button onClick={props.controlFunctions.forward} variant="contained" startIcon={<SkipNextIcon/>}></Button>
-                {/*@ts-ignore*/}
-                <Slider min={1} max={100} step={1} onChange={props.controlFunctions.volume}></Slider>
-                <Button onClick={props.controlFunctions.tenBackward} variant="contained" startIcon={<Replay10Icon/>}></Button>
-                <Button onClick={props.controlFunctions.tenForward} variant="contained" startIcon={<Forward10Icon/>}></Button>
-            </Toolbar>
-        </AppBar>
+    <div> 
+        <Button onClick={props.controlFunctions.backward} variant="contained" startIcon={<SkipPreviousIcon/>}>backward</Button>
+        <Button onClick={props.controlFunctions.toggle} variant="contained" startIcon={toggleIcon}></Button>
+        <Button onClick={props.controlFunctions.forward} variant="contained" startIcon={<SkipNextIcon/>}>forward</Button>
+        {/*Reference line 35 of Search.tsx */}
+        <SeekBar isSongPlaying={props.isPlaying} duration={props.duration} position={props.position} seek={props.controlFunctions.seek}></SeekBar>
+        {/*@ts-ignore*/}
+        <Slider min={1} max={100} step={1} onChange={props.controlFunctions.volume}></Slider>
+        <Button onClick={props.controlFunctions.tenBackward} variant="contained" startIcon={<Replay10Icon/>}>-10s</Button>
+        <Button onClick={props.controlFunctions.tenForward} variant="contained" startIcon={<Forward10Icon/>}>+10s</Button>
     </div>
 );
 }

@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { useEffect, useState} from 'react';
+import { useRef, useEffect, useState} from 'react';
 import PlayerUI, {IPlayerUIProps} from './PlayerUI';
 import Search from './Search/Search';
 import UserControls, {IUserControlFunctions} from './UserControls';
@@ -16,6 +16,10 @@ function WebPlayback(props: IWebPlaybackProps) {
     const [playerControlFunctions, setPlayerControlFuntions] = useState<IUserControlFunctions | undefined>();
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [deviceId,setDeviceId] = useState<string>();
+    const [position, setPosition] = useState<number>(1);
+    const [duration, setDuration] = useState<number>(400);
+    //MIGHT HAVE TO STORE EVENT DIFFERENTLY
+    //const delayedQuery = useRef(_.debounce(q => sendQuery(q), 500)).current;
     
     useEffect(() => {
 
@@ -33,7 +37,7 @@ function WebPlayback(props: IWebPlaybackProps) {
             const player = new window.Spotify.Player({
                 name: 'WebPlayBack SDK',
                 getOAuthToken: (cb: (arg:string) => any) => { cb(token); },
-                volume: 10.00
+                volume: 0.10
             });
             //listener to the player object for instatiating the player info on startup.
             player.addListener('ready', ({device_id}: {device_id: string}) => {
@@ -55,11 +59,13 @@ function WebPlayback(props: IWebPlaybackProps) {
             //@ts-ignore
             player.addListener('player_state_changed', (state) => {
                 updatePlayerInfo(state);
+                //Process A.2
                 
             });
             player.connect();
         };
     }, []);
+
 //PlayerUI Props interface setup
     const updatePlayerInfo = (state : any) => {
         if (!state) {
@@ -67,7 +73,15 @@ function WebPlayback(props: IWebPlaybackProps) {
             console.error('User is not playing music through the Web Playback SDK');
             return;
         }
-        setIsPlaying(!state.paused);
+        
+        //PROCESS A.1
+            //Get song length in ms
+                setDuration(state.track_window.current_track.duration_ms);
+            //Get song progress in ms
+                setPosition(state.position);
+        console.log(state);
+        setIsPlaying(!state.paused); //Boolean wether or not current state isPlaying.
+
         const updatedPlayerInfo: IPlayerUIProps = {
             trackName : state.track_window.current_track.name,
             albumName : state.track_window.current_track.album.name,
@@ -75,6 +89,7 @@ function WebPlayback(props: IWebPlaybackProps) {
         }
         setPlayerInfo(updatedPlayerInfo);
     }
+
 //UserControls Props interface setup
     const initializePlayerControls = (player: any) => {
         if (!player) {
@@ -115,6 +130,11 @@ function WebPlayback(props: IWebPlaybackProps) {
                         console.log('Stepped Backward 10s');
                     });
                 });
+            },
+            seek : (position_ms) => {
+                player.seek(position_ms).then(() => {
+                    console.log(`New Song Position: ${position_ms}`);
+                });
             }
         }
         setPlayerControlFuntions(updatedPlayerInfo);
@@ -137,7 +157,7 @@ function WebPlayback(props: IWebPlaybackProps) {
         >
             <Box sx={{gridArea: 'info'}}>{playerinfo && <PlayerUI trackName = {playerinfo.trackName} albumName = {playerinfo.albumName} artistName = {playerinfo.artistName}/> }</Box>
             <Box sx={{gridArea: 'search'}}>{deviceId && <Search deviceId = {deviceId}/>}</Box>
-            <Box sx={{gridArea: 'control'}}>{playerControlFunctions && <UserControls controlFunctions = {playerControlFunctions} isPlaying = {isPlaying} />}</Box>
+            <Box sx={{gridArea: 'control'}}>{playerControlFunctions && <UserControls controlFunctions = {playerControlFunctions} isPlaying = {isPlaying} position={position} duration={duration}/>}</Box>
         </Box>
     );
 }
