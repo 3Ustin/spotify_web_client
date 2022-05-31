@@ -42,15 +42,17 @@ function UserControls(props:IUserControlsProps){
     //Displaying Props
 return(
     <div> 
-        <Button onClick={props.controlFunctions.backward} variant="contained" startIcon={<SkipPreviousIcon/>}>backward</Button>
-        <Button onClick={props.controlFunctions.toggle} variant="contained" startIcon={toggleIcon}></Button>
-        <Button onClick={props.controlFunctions.forward} variant="contained" startIcon={<SkipNextIcon/>}>forward</Button>
-        {/*Reference line 35 of Search.tsx */}
-        <SeekBar isSongPlaying={props.isPlaying} duration={props.duration} position={props.position} seek={props.controlFunctions.seek}></SeekBar>
-        {/*@ts-ignore*/}
-        <Slider min={1} max={100} step={1} onChange={props.controlFunctions.volume}></Slider>
-        <Button onClick={props.controlFunctions.tenBackward} variant="contained" startIcon={<Replay10Icon/>}>-10s</Button>
-        <Button onClick={props.controlFunctions.tenForward} variant="contained" startIcon={<Forward10Icon/>}>+10s</Button>
+        <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+            <Button onClick={props.controlFunctions.backward} variant="contained" startIcon={<SkipPreviousIcon/>}>backward</Button>
+            <Button onClick={props.controlFunctions.toggle} variant="contained" startIcon={toggleIcon}></Button>
+            <Button onClick={props.controlFunctions.forward} variant="contained" startIcon={<SkipNextIcon/>}>forward</Button>
+            {/*Reference line 35 of Search.tsx */}
+            <SeekBar isSongPlaying={props.isPlaying} duration={props.duration} position={props.position} seek={props.controlFunctions.seek}></SeekBar>
+            {/*@ts-ignore*/}
+            <Slider min={1} max={100} step={1} onChange={props.controlFunctions.volume}></Slider>
+            <Button onClick={props.controlFunctions.tenBackward} variant="contained" startIcon={<Replay10Icon/>}>-10s</Button>
+            <Button onClick={props.controlFunctions.tenForward} variant="contained" startIcon={<Forward10Icon/>}>+10s</Button>
+        </AppBar>
     </div>
 );
 }
